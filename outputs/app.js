@@ -132,63 +132,30 @@ function bind(){ document.querySelectorAll('.panel-toggle').forEach(b=>b.onclick
 async function exportPdf(mode='all'){
   if(state.tab==='changes'||state.tab==='ai'){state.tab='adapted';shell()}
   const isLetterOnly = mode === 'letter';
-  toast(`Generating ${isLetterOnly ? 'Cover Letter' : 'PDF'}... please wait.`);
+  const isCvOnly = mode === 'cv';
+  
+  toast(`Opening print dialog... Please select "Save as PDF".`);
+  
   setPrintEditState(false);
   const fit = calculatePrintFit();
-  const scale = fit.scale || 1;
-  let css = `:root { --print-scale: ${scale.toFixed(3)} !important; }\n`;
-  for(const sheet of document.styleSheets){
-    try {
-      if(sheet.href){
-        if(sheet.href.startsWith(window.location.origin)){
-          const res=await fetch(sheet.href);
-          css+=await res.text();
-        }
-      } else {
-        css+=Array.from(sheet.cssRules).map(r=>r.cssText).join('');
-      }
-    }catch(e){}
+  document.documentElement.style.setProperty('--print-scale', fit.scale.toFixed(3));
+  
+  const cvPages = document.querySelectorAll('.cv-paper:not(.cover-letter-page)');
+  const letterPages = document.querySelectorAll('.cv-paper.cover-letter-page');
+  
+  if (isLetterOnly) {
+    cvPages.forEach(p => p.style.display = 'none');
+  } else if (isCvOnly) {
+    letterPages.forEach(p => p.style.display = 'none');
   }
 
-  let selector = '.cv-paper';
-  if(mode === 'cv') selector = '.cv-paper:not(.cover-letter-page)';
-  else if(mode === 'letter') selector = '.cv-paper.cover-letter-page';
-
-  const papers = Array.from(document.querySelectorAll(selector));
-  if(!papers.length){
-    toast('No document found to export.');
+  setTimeout(() => {
+    window.print();
+    cvPages.forEach(p => p.style.display = '');
+    letterPages.forEach(p => p.style.display = '');
     setPrintEditState(settings.editMode);
-    return;
-  }
-  const html = papers.map(p => p.outerHTML).join('\n');
-  const pdfApi = window.location.port === '3000' ? '/api/export-pdf' : 'http://localhost:3000/api/export-pdf';
-  try {
-    const res=await fetch(pdfApi,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({html,css,coverLetter:isLetterOnly})});
-    if(!res.ok) {
-      const errText = await res.text().catch(()=>'');
-      throw new Error(errText || `Server error (${res.status})`);
-    }
-    const blob=await res.blob();
-    const url=window.URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    let downloadName = suggestedFilename();
-    if(isLetterOnly) {
-      const title = state.cv.personal.role || jobTitle();
-      downloadName = `Lettre_de_Motivation_${filenamePart(state.cv.personal.name)}_${filenamePart(title)}`;
-    }
-    a.download=downloadName+'.pdf';
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-    toast(isLetterOnly ? 'Cover Letter PDF downloaded successfully' : (scale < 0.995 ? `PDF exported (auto-scaled to ${Math.round(scale*100)}% for 1 A4 page)` : 'PDF downloaded successfully'));
-  }catch(err){
-    toast('Error: '+(err.message || 'Is server.js running on port 3000?'));
-  }finally{
-    setPrintEditState(settings.editMode);
-    document.documentElement.style.setProperty('--print-scale','.9');
-  }
+    document.documentElement.style.setProperty('--print-scale', '.9');
+  }, 100);
 }
 function editHandler(e){if(!e.target.matches('[contenteditable][data-path]'))return;const path=e.target.dataset.path.split('.');let obj=state.cv;for(let i=0;i<path.length-1;i++)obj=obj[path[i]];const key=path.at(-1);const value=clean(e.target.innerText.replace(/\s+\/\s+/g,', '));obj[key]=['skills','languages','certifications'].includes(path[0])?value.split(',').map(v=>v.trim()).filter(Boolean):value;save();}
 function updateControls(){ $('#font-out').textContent=settings.font+'px';$('#margin-out').textContent=settings.margin+'mm';$('#line-out').textContent=settings.line; }
