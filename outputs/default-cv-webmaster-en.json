@@ -1,0 +1,78 @@
+{
+  "personal": {
+    "name": "John Doe",
+    "role": "Software Engineer",
+    "subtitle": "Available for remote work",
+    "location": "New York, USA",
+    "phone": "+1 555 019 2831",
+    "email": "john.doe@example.com",
+    "linkedin": "linkedin.com/in/johndoe",
+    "website": "johndoe.dev",
+    "photo": "profile-avatar.svg"
+  },
+  "summary": "Passionate software engineer with over 5 years of experience in building scalable web applications. Proficient in modern JavaScript frameworks and cloud technologies. Proven track record of delivering high-quality software on time.",
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Python",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "GraphQL",
+    "REST APIs",
+    "SQL",
+    "NoSQL",
+    "Git",
+    "CI/CD",
+    "Agile Methodologies"
+  ],
+  "languages": [
+    "English - Native",
+    "Spanish - Intermediate"
+  ],
+  "certifications": [
+    "AWS Certified Solutions Architect",
+    "Certified Kubernetes Administrator"
+  ],
+  "experience": [
+    {
+      "title": "Senior Software Engineer",
+      "company": "Tech Innovations Inc.",
+      "dates": "01/2021 - Present",
+      "location": "New York, USA",
+      "bullets": [
+        "Led a team of 5 engineers to develop a microservices-based platform serving 1M+ daily users.",
+        "Optimized database queries, reducing average response time by 40%.",
+        "Implemented CI/CD pipelines using GitHub Actions, decreasing deployment time by 50%."
+      ]
+    },
+    {
+      "title": "Full Stack Developer",
+      "company": "Web Solutions LLC",
+      "dates": "06/2018 - 12/2020",
+      "location": "Remote",
+      "bullets": [
+        "Developed and maintained responsive web applications using React and Node.js.",
+        "Integrated third-party APIs for payment processing and analytics.",
+        "Collaborated with designers to improve UI/UX, resulting in a 20% increase in user retention."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "State University",
+      "dates": "2014 - 2018",
+      "location": "New York, USA",
+      "description": "Graduated with honors. Relevant coursework: Data Structures, Algorithms, Web Development."
+    }
+  ],
+  "coverLetter": {
+    "greeting": "Dear Hiring Manager,",
+    "paragraph": "I am writing to express my interest in the Software Engineer position at your company. With a solid foundation in software development and hands-on experience building scalable web applications, I am confident in my ability to make a significant impact on your team. I thrive in collaborative environments and am always eager to learn new technologies. I look forward to the opportunity to discuss how my skills and experiences align with your goals.",
+    "closing": "Thank you for considering my application. I hope to hear from you soon.",
+    "signoff": "Sincerely,"
+  }
+}
